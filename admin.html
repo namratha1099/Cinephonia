@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cinephonia – Admin Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="app">
+  <div class="hero">
+    <div class="kicker">Admin studio</div>
+    <h1 class="logo sm">Cine<em>phonia</em></h1>
+    <div class="rule"></div>
+    <p class="tagline">Add film songs for your players. Every change is published to your GitHub repository.</p>
+  </div>
+
+  <section class="card">
+    <h3>1. Connect to GitHub</h3>
+    <div class="form g4">
+      <label>Owner<input id="ghOwner" placeholder="your-username" autocomplete="off"></label>
+      <label>Repository<input id="ghRepo" placeholder="cinephonia" autocomplete="off"></label>
+      <label>Branch<input id="ghBranch" value="main" autocomplete="off"></label>
+      <label>Access token<input id="ghToken" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <label class="chk"><input type="checkbox" id="remember"> Remember on this device</label>
+      <div class="row"><button class="btn ghost sm" id="forgetBtn">Forget token</button><button class="btn primary sm" id="connectBtn">Connect</button></div>
+    </div>
+    <div class="ghstatus" id="ghStatus">Not connected. Anyone can open this page, but nothing can be changed without your GitHub token.</div>
+    <details class="help"><summary>How do I get a token?</summary>
+      <ol>
+        <li>On GitHub open <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens</b> and click <b>Generate new token</b>.</li>
+        <li>Under <b>Repository access</b> choose <b>Only select repositories</b> and pick this game's repository.</li>
+        <li>Under <b>Permissions → Repository permissions</b> set <b>Contents</b> to <b>Read and write</b>.</li>
+        <li>Generate it, copy it and paste it above. Never share it or put it in the repository.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="card">
+    <h3>2. Add songs</h3>
+    <div class="tabs seg" id="addTabs"><button data-t="yt" class="on">YouTube link</button><button data-t="file">Upload audio file</button></div>
+
+    <div id="tab-yt">
+      <div class="ytform">
+        <label class="fl wide">YouTube link<input id="ytUrl" type="url" placeholder="https://www.youtube.com/watch?v=…  or  https://youtu.be/…"></label>
+        <label class="fl wide">Movie title<input id="ytTitle" maxlength="80" placeholder="e.g. RRR"></label>
+        <label class="fl">Industry<select id="ytCat"></select></label>
+        <label class="fl">Difficulty<select id="ytDiff"></select></label>
+        <label class="fl">Start (s)<input id="ytStart" type="number" min="0" step="1" value="0"></label>
+      </div>
+      <p class="hint">Tip: if the link has a time in it (like <i>&amp;t=75s</i>), the start time fills in automatically. Players hear 15 seconds from that point, and the video is revealed after they answer. Some videos don't allow embedding on other sites. Use ▶ Preview to check before you add one.</p>
+      <div class="actions"><button class="btn ghost" id="ytPrevBtn">▶ Preview</button><button class="btn primary" id="ytAddBtn">Add &amp; publish</button></div>
+    </div>
+
+    <div id="tab-file" hidden>
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.aac" multiple hidden>
+        <b>Drop song files here or click to choose</b>
+        <small>MP3, M4A, WAV or OGG, ideally short clips under 10 MB. The file name becomes the movie title (e.g. <i>RRR.mp3</i> → “RRR”).</small>
+      </label>
+      <div id="queue" class="clips"></div>
+      <div class="progress" id="prog" hidden><i></i></div>
+      <div class="actions"><button class="btn primary" id="uploadBtn" disabled>Upload &amp; publish</button></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="row"><h3 style="margin:0">3. Song library <small id="libCount"></small></h3>
+      <div class="seg" id="libFilter"><button data-f="all" class="on">All</button><button data-f="tollywood">Tollywood</button><button data-f="bollywood">Bollywood</button><button data-f="hollywood">Hollywood</button></div></div>
+    <div id="library" class="clips"></div>
+    <div class="actions"><button class="btn ghost sm" id="dlBtn">Download songs.json</button><button class="btn primary sm" id="saveBtn" disabled>Save changes</button></div>
+    <p class="hint">GitHub Pages usually updates the live game about a minute after you publish. Deleting an uploaded song also removes its audio file from the repository.</p>
+  </section>
+  <p class="hint txt-center"><a href="./">← Open the game</a></p>
+</main>
+<div class="ytpreview" id="ytPreview" hidden><button id="ytPrevClose" title="Close">✕</button><div id="ytPrev"></div></div>
+<div id="toast"></div>
+<script src="js/common.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
