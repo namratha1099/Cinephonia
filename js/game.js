@@ -53,16 +53,17 @@ function ytPlayer(){
 }
 function ytPause(){try{if(ytP&&ytP.pauseVideo)ytP.pauseVideo();}catch(e){}}
 function onYtState(e){const g=G.game;if(g&&g.ytWaiting&&e.data===1){g.ytWaiting=false;clearTimeout(g.ytTimer);beginClock(g);}}
-function onYtError(){const g=G.game;if(g&&g.ytWaiting){g.ytWaiting=false;clearTimeout(g.ytTimer);toast("This YouTube video can't be played here, skipping it");advance();}}
+function onYtError(){const g=G.game;if(g&&g.ytWaiting&&g.party){g.ytWaiting=false;clearTimeout(g.ytTimer);Party.mediaFailed();return;}if(g&&g.ytWaiting){g.ytWaiting=false;clearTimeout(g.ytTimer);toast("This YouTube video can't be played here, skipping it");advance();}}
 
 /* ---------- Setup form ---------- */
+function industryOptions(){return availableCats().filter(c=>c.n>0).map(c=>`<option value="${c.id}">${CATS[c.id].label}</option>`).join('');}
 function renderSetup(){
   const s=G.setup;
   $('#mode').value=s.mode;$('#botLevel').value=s.bot;$('#difficulty').value=s.diff;$('#rounds').value=String(s.rounds);
   $('#botWrap').style.display=s.mode==='bot'?'':'none';
   const cats=availableCats();
   if(!cats.find(c=>c.id===s.cat&&c.n>0))s.cat=(cats.find(c=>c.n>0)||{id:'demo'}).id;
-  $('#industry').innerHTML=cats.map(c=>`<option value="${c.id}" ${c.n?'':'disabled'}>${CATS[c.id].label} · ${c.n?c.n+' song'+(c.n>1?'s':''):'no songs yet'}</option>`).join('');
+  $('#industry').innerHTML=industryOptions();
   $('#industry').value=s.cat;
   const humans=s.mode==='bot'?1:+s.mode,box=$('#names');box.innerHTML='';
   for(let i=0;i<humans;i++){
@@ -134,8 +135,8 @@ function renderBoard(sel,active){
 function showTurn(){
   const g=G.game,t=g.turns[g.i],p=g.players[t.p],D=DIFF[t.diff],multi=g.humans>1;
   $('#tAvatar').textContent=p.name[0].toUpperCase();$('#tAvatar').style.setProperty('--c',p.color);
-  $('#tName').textContent=multi?`${p.name}'s turn`:`Round ${t.r+1}`;
-  $('#tInfo').innerHTML=`Round ${t.r+1} of ${g.rounds} · <span class="badge ${t.diff}">${D.label}</span> · ${CATS[g.cat].label}`;
+  $('#tName').textContent=multi?`${p.name}'s turn`:`Scene ${t.r+1}`;
+  $('#tInfo').innerHTML=`Scene ${t.r+1} of ${g.rounds} · <span class="badge ${t.diff}">${D.label}</span> · ${CATS[g.cat].label}`;
   $('#tHint').textContent=(multi?`Pass the device to ${p.name}. `:g.bot?`You against ${g.bot.name}. `:'')+'Answer within 5 seconds for a lightning bonus.';
   renderBoard('#tBoard',multi?t.p:-1);
   show('turn');
@@ -144,6 +145,7 @@ function showTurn(){
 $('#readyBtn').onclick=()=>{ctx();show('game');playTurn();};
 
 function beginClock(g,offsetMs=0){
+  clearTimeout(g.tapT);clearTimeout(g.ytTimer);if(g.party)$('#ytBox .veil').innerHTML='<div><b>Listening…</b>The video is revealed after everyone answers.</div>';
   g.start=performance.now()+offsetMs;g.live=true;g.answered=false;
   $$('.opt').forEach(b=>{b.disabled=false;b.classList.remove('wait');});
   $('#status').textContent='Listening';
@@ -151,7 +153,7 @@ function beginClock(g,offsetMs=0){
 async function playTurn(){
   const g=G.game,t=g.turns[g.i],p=g.players[t.p],D=DIFF[t.diff];
   renderBoard('#board',g.humans>1?t.p:-1);
-  $('#gPlayer').textContent=g.bot?`${p.name} vs Bot`:p.name;$('#gRound').textContent=`Round ${t.r+1} of ${g.rounds}`;
+  $('#gPlayer').textContent=g.bot?`${p.name} vs Bot`:p.name;$('#gRound').textContent=`Scene ${t.r+1} of ${g.rounds}`;
   $('#gDiff').className='badge '+t.diff;$('#gDiff').textContent=D.label;
   $('#nextBtn').hidden=true;
   const fb=$('#feedback');fb.textContent='';fb.className='feedback';
@@ -184,6 +186,7 @@ const scoreOf=(D,el,streak)=>D.base+Math.round((CLIP-el)/CLIP*50*D.mult)+(el<=FA
 
 function finish(idx){
   const g=G.game;if(!g||!g.live||g.answered)return;
+  if(g.party){g.answered=true;g.live=false;Party.localAnswer(idx,Math.min(CLIP,Math.max(0,(performance.now()-g.start)/1000)));return;}
   g.answered=true;g.live=false;
   const t=g.turns[g.i],p=g.players[t.p],D=DIFF[t.diff];
   const el=Math.min(CLIP,Math.max(0,(performance.now()-g.start)/1000));
@@ -218,8 +221,8 @@ function finish(idx){
   if(fast)celebrate(pts);else{sfx(ok);nb.focus({preventScroll:true});}
 }
 function advance(){const g=G.game;stopAll();g.i++;if(g.i>=g.turns.length)results();else showTurn();}
-$('#nextBtn').onclick=()=>{$('#nextBtn').hidden=true;advance();};
-$('#quitBtn').onclick=()=>{if(G.game){G.game.live=false;G.game.ytWaiting=false;clearTimeout(G.game.ytTimer);}show('home');};
+$('#nextBtn').onclick=()=>{$('#nextBtn').hidden=true;if(G.game&&G.game.party)Party.next();else advance();};
+$('#quitBtn').onclick=()=>{if(G.game&&G.game.party){Party.leave();return;}if(G.game){G.game.live=false;G.game.ytWaiting=false;clearTimeout(G.game.ytTimer);}show('home');};
 function floatPts(t){const s=document.createElement('div');s.className='pts';s.textContent=t;$('#floaty').appendChild(s);setTimeout(()=>s.remove(),1400);}
 function setRing(frac){$('#prog').style.strokeDashoffset=(578.05*frac).toFixed(1);$('#ring').classList.toggle('low',frac>.8&&frac<1);}
 
@@ -244,7 +247,7 @@ function celebrate(pts){
 function hideCelebration(){
   const ov=$('#celebrate');if(ov.hidden)return;
   ov.hidden=true;clearTimeout(celT);try{$('#celVideo').pause();}catch(e){}
-  if(G.game&&G.game.isYT&&isActive('game')&&ytP)try{ytP.playVideo();}catch(e){}
+  if(G.game&&G.game.isYT&&isActive('game')&&ytP&&!G.game.party)try{ytP.playVideo();}catch(e){}
   if(!$('#nextBtn').hidden)$('#nextBtn').focus({preventScroll:true});
 }
 $('#celebrate').onclick=hideCelebration;

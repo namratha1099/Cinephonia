@@ -52,12 +52,12 @@
             <option value="progressive">Progressive: Easy → Hard</option>
           </select>
         </label>
-        <label class="fl">Rounds
+        <label class="fl">Scenes per player
           <select id="rounds">
-            <option value="3">3 rounds</option>
-            <option value="5">5 rounds</option>
-            <option value="7">7 rounds</option>
-            <option value="10">10 rounds</option>
+            <option value="3">3 scenes · a quick trailer</option>
+            <option value="5">5 scenes · a short film</option>
+            <option value="7">7 scenes · a feature</option>
+            <option value="10">10 scenes · the director's cut</option>
           </select>
         </label>
       </div>
@@ -66,6 +66,18 @@
         <div class="names" id="names" style="margin-top:8px"></div>
       </div>
       <div class="actions"><button class="btn primary big" id="startBtn">Start game</button></div>
+    </div>
+
+    <div class="card party-cta">
+      <div>
+        <div class="kicker">New · Party mode</div>
+        <h3 style="margin:6px 0 4px">Play online with friends</h3>
+        <p class="hint" style="margin:0">Each person plays on their own phone or laptop. Host a room, share the code, and everyone hears the same song at the same time.</p>
+      </div>
+      <div class="row" style="justify-content:flex-start;margin-top:16px">
+        <button class="btn primary" id="hostBtn">Host a party</button>
+        <button class="btn ghost" id="joinBtn">Join with a code</button>
+      </div>
     </div>
 
     <div class="steps">
@@ -85,6 +97,64 @@
       <div class="actions"><button class="btn primary big" id="readyBtn">I'm ready</button></div>
     </div>
     <div class="board" id="tBoard"></div>
+  </section>
+
+  <!-- PARTY: host / join -->
+  <section id="party" class="screen">
+    <div class="hero"><div class="kicker">Party mode</div><h2 class="logo sm">Join the <em>show</em></h2><div class="rule"></div></div>
+    <div class="card">
+      <label class="fl">Your name<input id="pName" maxlength="18" placeholder="e.g. Surya"></label>
+      <div id="joinBox" style="margin-top:18px">
+        <span class="fl">Room code</span>
+        <div class="codein" id="codeIn">
+          <input maxlength="1" inputmode="text" autocomplete="off"><input maxlength="1" autocomplete="off"><input maxlength="1" autocomplete="off"><input maxlength="1" autocomplete="off"><input maxlength="1" autocomplete="off">
+        </div>
+      </div>
+      <div class="actions"><button class="btn ghost" data-go="home">Back</button><button class="btn primary big" id="partyGo">Join party</button></div>
+      <p class="hint txt-center" id="partyMsg"></p>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="lobby" class="screen">
+    <div class="ticket">
+      <div class="ticket-main">
+        <div class="kicker">Admit all · Room code</div>
+        <div class="tiles" id="codeTiles"></div>
+        <div class="row" style="justify-content:center;margin-top:16px">
+          <button class="btn ghost sm" id="copyCode">Copy code</button>
+          <button class="btn ghost sm" id="copyLink">Copy invite link</button>
+        </div>
+        <p class="hint txt-center" id="lobbyHint"></p>
+      </div>
+      <div class="ticket-stub"><span>CINEPHONIA</span><span id="stubCount">1 / 8</span></div>
+    </div>
+    <div class="card">
+      <h3>In the audience <small id="lobbyCount"></small></h3>
+      <div class="guests" id="guests"></div>
+    </div>
+    <div class="card" id="hostSettings">
+      <h3>Tonight's programme</h3>
+      <div class="form g2">
+        <label class="fl">Film industry <select id="pIndustry"></select></label>
+        <label class="fl">Difficulty
+          <select id="pDifficulty">
+            <option value="easy">Easy: 3 choices</option>
+            <option value="medium">Medium: 4 choices</option>
+            <option value="hard">Hard: 5 choices</option>
+            <option value="progressive">Progressive: Easy → Hard</option>
+          </select></label>
+        <label class="fl">Scenes
+          <select id="pScenes">
+            <option value="5">5 scenes · a short film</option>
+            <option value="8">8 scenes · a feature</option>
+            <option value="12">12 scenes · the director's cut</option>
+          </select></label>
+      </div>
+      <div class="actions"><button class="btn primary big" id="pStart">Roll the film</button></div>
+    </div>
+    <div class="card txt-center" id="guestWait"><p class="waiting">Waiting for the host to roll the film<span>.</span><span>.</span><span>.</span></p><p class="hint" id="guestProg"></p></div>
+    <div class="actions"><button class="btn ghost" id="leaveBtn">Leave party</button></div>
   </section>
 
   <!-- GAME -->
@@ -107,6 +177,7 @@
     <div class="opts" id="opts"></div>
     <div class="feedback" id="feedback"></div>
     <div class="botline" id="botline"></div>
+    <div class="partyres" id="partyres"></div>
     <div class="ytbox" id="ytBox" hidden>
       <div id="ytPlayer"></div>
       <div class="veil"><div><b>Listening…</b>The video is revealed after you answer.</div></div>
@@ -160,8 +231,10 @@
     <small>tap anywhere to continue</small>
   </div>
 </div>
+<div id="countdown" class="countdown" hidden><div class="cd-num" id="cdNum">3</div><div class="cd-sub" id="cdSub">Scene 1</div></div>
 <div id="toast"></div>
 <script src="js/common.js"></script>
 <script src="js/game.js"></script>
+<script src="js/party.js"></script>
 </body>
 </html>

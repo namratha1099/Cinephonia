@@ -45,8 +45,10 @@ async function loadSongs(){
 /* ---------- Quiet background ---------- */
 function injectBackground(){
   const bg=document.createElement('div');bg.id='bg';
-  bg.innerHTML='<div class="glow g1"></div><div class="glow g2"></div><div class="grain"></div>';
+  bg.innerHTML='<div class="spot"></div><div class="sunburst"></div><div class="arc"></div><div class="curtain l"></div><div class="curtain r"></div><div class="valance"></div><div class="trim"></div><div class="vignette"></div><div class="grain"></div>';
   document.body.prepend(bg);
+  for(let i=0;i<16;i++){const d=document.createElement('i');d.className='dust';d.style.left=(8+Math.random()*84)+'vw';d.style.setProperty('--dx',((Math.random()-.5)*120)+'px');
+    d.style.animationDuration=(14+Math.random()*16)+'s';d.style.animationDelay=(-Math.random()*30)+'s';const z=1+Math.random()*2;d.style.width=d.style.height=z+'px';bg.appendChild(d);}
 }
 
 /* ---------- YouTube links ---------- */
