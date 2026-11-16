@@ -79,6 +79,14 @@
       "difficulty": "easy",
       "start": 103,
       "file": "songs/tollywood/nuvvu-naaku-nachav-lq52.mp3"
+    },
+    {
+      "id": "songs/tollywood/jeans-237r.mp3",
+      "title": "Jeans",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 15,
+      "file": "songs/tollywood/jeans-237r.mp3"
     }
   ]
 }
