@@ -16,6 +16,6 @@ Answer within the first 5 seconds for a ⚡ lightning bonus and a little celebra
 
 Play with friends on their own phones or laptops.
 
-1.One person taps Host a party and gets a room code.
-2.Everyone else taps Join with a code and types it in.
+1.One person taps Host a party and gets a room code.  
+2.Everyone else taps Join with a code and types it in.  
 3.The host starts the game, and everyone hears the same song at the same time.
