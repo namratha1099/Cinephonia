@@ -1,3 +1,84 @@
 {
-  "songs": []
+  "songs": [
+    {
+      "id": "songs/tollywood/andhra-king-taluka-vwv8.mp3",
+      "title": "Andhra King Taluka",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 36,
+      "file": "songs/tollywood/andhra-king-taluka-vwv8.mp3"
+    },
+    {
+      "id": "songs/tollywood/chandamama-q7n2.mp3",
+      "title": "Chandamama",
+      "category": "tollywood",
+      "difficulty": "medium",
+      "start": 220,
+      "file": "songs/tollywood/chandamama-q7n2.mp3"
+    },
+    {
+      "id": "songs/tollywood/krishnavataram-emc3.mp3",
+      "title": "Krishnavataram",
+      "category": "tollywood",
+      "difficulty": "medium",
+      "start": 58,
+      "file": "songs/tollywood/krishnavataram-emc3.mp3"
+    },
+    {
+      "id": "songs/tollywood/godavari-nz8j.mp3",
+      "title": "Godavari",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 8,
+      "file": "songs/tollywood/godavari-nz8j.mp3"
+    },
+    {
+      "id": "songs/tollywood/anandam-yn3y.mp3",
+      "title": "Anandam",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 16,
+      "file": "songs/tollywood/anandam-yn3y.mp3"
+    },
+    {
+      "id": "songs/tollywood/three-xah9.mp3",
+      "title": "Three",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 2,
+      "file": "songs/tollywood/three-xah9.mp3"
+    },
+    {
+      "id": "songs/tollywood/aparichithudu-dvbc.mp3",
+      "title": "Aparichithudu",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 6,
+      "file": "songs/tollywood/aparichithudu-dvbc.mp3"
+    },
+    {
+      "id": "songs/tollywood/narasimha-knlf.mp3",
+      "title": "Narasimha",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 10,
+      "file": "songs/tollywood/narasimha-knlf.mp3"
+    },
+    {
+      "id": "songs/tollywood/endukantepremanta-k2vh.mp3",
+      "title": "EndukantePremanta",
+      "category": "tollywood",
+      "difficulty": "medium",
+      "start": 224,
+      "file": "songs/tollywood/endukantepremanta-k2vh.mp3"
+    },
+    {
+      "id": "songs/tollywood/nuvvu-naaku-nachav-lq52.mp3",
+      "title": "Nuvvu Naaku Nachav",
+      "category": "tollywood",
+      "difficulty": "easy",
+      "start": 103,
+      "file": "songs/tollywood/nuvvu-naaku-nachav-lq52.mp3"
+    }
+  ]
 }
